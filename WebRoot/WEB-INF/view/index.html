@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <title>友邻</title>
+        <link rel="stylesheet" href="../static/css/jquery.mobile-1.4.5.css">
+        <script src="../static/js/jquery-1.11.3.js"></script>
+        <script src="../static/js/jquery.mobile-1.4.5.js"></script>
+        <link rel="../static/stylesheet" href="css/style.css">
+        <script src="../static/js/getSessionList.js"></script>
+        <script src="../static/js/websocket.js"></script>
+		<script src="../static/js/chatPage.js"></script>
+        <!--菜单为page1-->
+        <div data-role="page" id="page1">
+                <div id="user-info">
+                        <ul data-role="listview" data-inset="true">
+                                <li data-icon="false">
+                                        <a href="#"><img id="usr-portrait" src="img/user_portrait.png">
+                                        <h1 id="user-nickname">云天</h1>
+                                        <p id="user-signature">人生如梦，一樽还酹江月。</p>
+                                        </a><!--点击跳转到聊天页-->
+                                </li>           
+                        </ul>
+                </div>
+
+                
+                <div id="menu">
+                        <div id="menu-header" data-role="header"><h1>会话列表</h1></div>
+                        <div id="contacts"></div>
+                        <a href="#page2" data-transition="slide">滑动</a>
+                                <ul data-role="listview" data-inset="true" id="conversations">
+                                        <li data-icon="false" id="conversation">
+                                                <a href="#page2"><img src="img/simsimi.jpg">
+                                                <h2>simsimi</h2>
+                                                <p>你在吗</p>
+                                                <span class="ui-li-count">1</span>
+                                                </a><!--点击跳转到聊天页-->
+                                        </li>    
+
+                                       <!--  <li data-icon="false">
+                                               <a href="#"><img src="img/portrait_2.jpg">
+                                               <h2>张森杰</h2>
+                                               <p>晚上去游泳么？</p>
+                                               <span class="ui-li-count">1</span>
+                                               </a>点击跳转到聊天页
+                                       </li>                                   
+                                       
+                                       <li data-icon="false">
+                                               <a href="#"><img src="img/portrait_3.jpg">
+                                               <h2>易晓露</h2>
+                                               <p>走，打羽毛球</p>
+                                               <span class="ui-li-count">121</span>
+                                               </a>点击跳转到聊天页
+                                       </li>                                   
+                                       
+                                       <li data-icon="false">
+                                               <a href="#"><img src="img/portrait_4.jpg">
+                                               <h2>姜国华</h2>
+                                               <p>学长，钱打给你了</p>
+                                               <span class="ui-li-count">25</span>
+                                               </a>点击跳转到聊天页
+                                       </li> -->
+
+                                
+                                </ul>
+                        
+                 
+                        <div id="menu-footer" data-role="footer">
+                                <div data-role="navbar">
+                                        <ul>
+                                                <li><a href="#" class="ui-btn-active">会话</a></li>
+                                                <li><a href="#">联系人</a></li>
+                                                <li><a href="#">发现</a></li>
+                                                <li><a href="#">设置</a></li>
+                                        </ul>
+                                </div>
+                        </div>
+
+
+                </div>
+        </div>
+
+
+        <div data-role="page" id="page2">
+
+                <div id="message-box">
+                        <div id="message-header" data-role="header">simsimi</div>
+                        
+
+                        <div id="message-text" data-role="content">
+                        <a href="#page1" data-transition="slide" data-direction="reverse">反向滑动</a>
+                                <!--聊天内容-->
+                                <div id="text-box">
+
+                                        <div class="chat-content-group buddy">
+                                                <img src="img/simsimi.jpg" class="left portrait-icon">
+                                                <span class="left chat-text">在吗?</span>
+                                                <!--点击跳转到聊天页-->
+                                        </div>                                  
+
+                                        <div class="chat-content-group buddy">
+                                                <img src="img/user_portrait.png" class="right portrait-icon">
+                                                <span class="right chat-text">在，什么事?</span>
+                                        </div>                                  
+
+                                        <div class="chat-content-group buddy">
+                                                <img src="img/simsimi.jpg" class="left portrait-icon">
+                                                <span class="left chat-text">周五晚上有时间吗？</span>
+                                        </div>                                  
+
+                                        <div class="chat-content-group buddy">
+                                                <img src="img/user_portrait.png" class="right portrait-icon">
+                                                <span class="right chat-text">有，嘻嘻</span>
+                                        </div>
+
+                                </div>
+
+
+                        </div>
+
+                        
+
+                        <div data-role="navbar" data-iconpos="left">
+                                <ul>
+                                        <li><a href="#" data-icon="grid" >One</a></li>
+                                        <li><a href="#" data-icon="star">Two</a></li>
+                                        <li><a href="#" data-icon="gear">Three</a></li>
+                                </ul>
+                        </div><!--/navbar -->
+
+                        <div id="input-text" >
+                              <!--   <form method="post" action="demoform.php"> -->
+                                <form id="chatform">
+                                      
+                                         <label for="inputting" id="name-label" value="simsimi">simsimi</label>
+                                        聊天内容：<textarea id="inputting" name="inputting" placeholder="请输入聊天内容..." rows="3" cols="20"></textarea>
+
+                                        <div class="ui-btn-inline">
+                                                <input id="send" type="submit" value="发送">
+                                        </div>
+                                </form>
+                        </div>
+
+                        <div id="message-footer" data-role="footer"></div>
+                </div>
+
+        </div>
+
+
+
+
+</head>
+<body>
+        
+</body>
+</html>

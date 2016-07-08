@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>注册友邻</title>
+      
+
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.css">
+        <meta name="viewport" content="width=device-width initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" >
+        <link rel="stylesheet" type="text/css" href="css/logup-login.css">
+
+        <script src="js/jquery-1.11.3.js"></script>
+        <script src="js/jquery.mobile-1.4.5.js"></script>
+        <script src="js/event-handler.js"></script>
+
+</head>
+<body>
+
+                <section id="logup-mail-page" data-role="page">
+                  <header data-role="header"  data-theme="b"  data-type="horizontal">
+                    <div data-role="controlgroup" >
+                        <nav data-role="navbar">
+                            <ul>
+                                <li><a href="#logup-mail-page" class="ui-btn-active">用邮箱注册</a></li>
+                                <li><a href="#logup-phone-page">用手机号注册</a></li>
+                            </ul>
+                         </nav>
+                    </div>
+                  </header>
+                  <div data-role="content" class="content">
+
+                    <p style="backg"><font color="#2EB1E8" >注册友邻</font></p>
+                        <form method="post" id="registerform">
+
+                            <div class="form-input">邮箱：<input type="text" name="email" id="email" placeholder="请输入注册邮箱"/></div>
+                            <br>
+                            <div class="form-input">用户名：<input type="text" name="username" id="username" placeholder="请输入用户名"/></div>
+                            <br>
+                            <div class="form-input">密码：<input type="password" name="password" id="password" placeholder="请输入密码" /></div>
+                            <br>
+                            <div class="form-input">确认密码：<input type="password" name="comfirmPassword" id="comfirmPassword" placeholder="请再次输入密码" /></div>
+
+                            <a data-role="button" id="submitRegister" data-theme="a">确认提交注册信息</a>
+                       
+                            <a href="#" data-role="button" id="logupBtn" data-theme="e">注册</a>
+                            <a href="login.html" data-role="button" id="submit" data-theme="b">登录</a>
+
+                        </form>
+                  </div>
+                </section>      	
+
+                <section id="logup-phone-page" data-role="page">
+		  <header data-role="header"  data-theme="b"  data-type="horizontal">
+                    <div data-role="controlgroup" >
+                        <nav data-role="navbar">
+                            <ul>
+                                <li><a href="#logup-mail-page">用邮箱注册</a></li>
+                                <li><a href="#logup-phone-page" class="ui-btn-active">用手机号注册</a></li>
+                            </ul>
+                         </nav>
+                    </div>
+                  </header>
+
+		  <div data-role="content" class="content">
+
+		    <p style="backg"><font color="#2EB1E8" >注册友邻</font></p>
+		        <form method="post" id="registerform">
+		            手机号：<input type="text" name="phoneNum" id="phoneNum" placeholder="请输入注册手机号"/><br>
+		            用户名：<input type="text" name="username" id="username" placeholder="请输入用户名"/><br>
+		            密码：<input type="password" name="password" id="password" placeholder="请输入密码" />
+		            确认密码：<input type="password" name="comfirmPassword" id="comfirmPassword" placeholder="请再次输入密码" />
+		       
+		            <a href="#" data-role="button" id="logupBtn" data-theme="e">注册</a>
+		            <a href="login.html" data-role="button" id="submit" data-theme="b">登录</a>
+
+		        </form>
+		  </div>
+		</section>
+
+
+
+		
+</body>
+</html>

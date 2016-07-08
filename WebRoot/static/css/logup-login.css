@@ -1,0 +1,27 @@
+.blue{
+	background-color: #33f;
+}
+
+ul>li>a#logup-mail-page{
+	
+}
+
+ul>li>a#logup-phone-page{
+
+}
+form input{
+	width: 60%;
+}
+
+.formtips{
+
+}
+.onSuccess{
+	background-color: #1e1;
+	opacity:0.2;
+}
+.onError{
+	background-color: #e11;
+	opacity:0.2;
+
+}
