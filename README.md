@@ -2,3 +2,5 @@
 Location Based Social Networks
 
 git remote name is github_im
+
+add by trent92
