@@ -31,6 +31,7 @@ import com.locationshare.app.model.User;
 import com.locationshare.app.service.UserService;
 import com.locationshare.utils.MD5;
 import com.locationshare.utils.redis.JedisPoolUtils;
+import com.mysql.fabric.xmlrpc.base.Array;
 /**
  * @author Jason_zh
  * @date 2016年6月1日
@@ -140,18 +141,28 @@ public class UserController {
 				tempMap.put("url", friInfo.get(3));
 				friendid = Integer.parseInt(friInfo.get(0));
 			}
-			//从redis中加载最新的三条聊天信息
-			/*
-			 * TODO
-			 * */
-			//redis中不存在（可能缓存清理或者宕机等问题），则从MySQL加载
-			List<Message> messages = userService.getLastMessages(user.getId(),friendid);
-			if (messages.get(0)!=null) {
-				tempMap.put("last_message", messages.get(0).getContext());
+			
+			String message = "";
+			//从redis中加载最新的一条聊天信息
+			List<String> messageFromRedis;
+			if(username.hashCode() < username2.hashCode()){
+				messageFromRedis = jedis.lrange(username+username2, 0, 1);
 			}else {
-				//如果没有消息，则说明已经查询到所有有效日期内的好友聊天记录
-				break;
+				messageFromRedis = jedis.lrange(username2+username, 0, 1);
 			}
+			
+			if (messageFromRedis.size()!=0) {
+				message = messageFromRedis.get(0);
+			}else{
+				//redis中不存在（可能缓存清理或者宕机等问题），则从MySQL加载
+				List<Message> messages = userService.getLastMessages(user.getId(),friendid);
+				if(messages.get(0)!=null)
+					message = messages.get(0).getContext();
+				else
+					//如果没有消息，则说明已经查询到所有有效日期内的好友聊天记录
+					break;
+			}
+			tempMap.put("last_message", message);
 			friendsList.add(tempMap);
 		}
         map.put("friends", friendsList);
@@ -212,5 +223,72 @@ public class UserController {
 			return map;
 			//return new ModelAndView("redirect:/user/register_form.do");
 		}
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="message")
+	public List<String> message(@RequestParam("username")String username,@RequestParam("friendname")String friendname){
+		Jedis jedis = JedisPoolUtils.getJedis();
+		List<String> messagesAfter = new ArrayList<>();
+		if (username.hashCode()<friendname.hashCode()) {
+			List<String> messages = jedis.lrange(username+friendname, 0, 3);
+			/*如果redis中没有消息，尝试从数据库取消息
+			 * TODO
+			 * */
+			for (String mes : messages) {
+				if(mes.startsWith("S:"))
+					mes.replaceFirst("S:", "M:");
+				else if(mes.startsWith("R:"))
+					mes.replaceFirst("R:", "O:");
+				messagesAfter.add(mes);
+			}
+		}else {
+			List<String> messages = jedis.lrange(friendname+username, 0, 3);
+			/*如果redis中没有消息，尝试从数据库取消息
+			 * TODO
+			 * */
+			for (String mes : messages) {
+				if(mes.startsWith("S:"))
+					mes.replaceFirst("S:", "O:");
+				else if(mes.startsWith("R:"))
+					mes.replaceFirst("R:", "M:");
+				messagesAfter.add(mes);
+			}
+		}
+		return messagesAfter;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="message")
+	public List<Map<String, String>> message(@RequestParam("username")String username){
+		//redis加载好友信息,redis中存储的好友列表采用sorted set的形式，按照最近聊天的顺序进行排列，此处获取得到的好友就是按照最近聊天排序的
+		Jedis jedis = JedisPoolUtils.getJedis();
+		Set<String> friNames = jedis.zrevrange(username, 0, -1);
+		
+		List<Map<String, String>> friendsList = new ArrayList<Map<String,String>>();
+		//尝试从redis获取好友信息
+		for (String username2 : friNames) {
+			Map<String, String> tempMap = new HashMap<String, String>();
+			List<String> friInfo = jedis.hmget(username2+"info", "userid","username","nickname","url");
+			//redis中该好友信息不存在，则从数据库加载并存入redis
+			if (friInfo.get(0)==null && friInfo.get(1)==null && friInfo.get(2)==null) {
+				User userTemp = userService.getUserByName(username2);
+				if (userTemp!=null) {
+					tempMap.put("userid", userTemp.getId()!=null?userTemp.getId().toString():"");
+					tempMap.put("username", userTemp.getUsername()!=null?userTemp.getUsername():"");
+					tempMap.put("nickname", userTemp.getNickname()!=null?userTemp.getNickname():"");
+					tempMap.put("url", userTemp.getUrl()!=null?userTemp.getUrl():"");
+				}
+				jedis.hmset(username2+"info", tempMap);
+			//redis中存在该好友信息，直接封装
+			}else{
+				tempMap.put("username", friInfo.get(1));
+				tempMap.put("nickname", friInfo.get(2));
+				tempMap.put("url", friInfo.get(3));
+				//还要加一个signature，目前redis中没有，同时url要改成portraitURL
+			}
+			friendsList.add(tempMap);
+		}
+		return friendsList;
 	}
 }
